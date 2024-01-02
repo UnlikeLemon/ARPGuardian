@@ -19,16 +19,12 @@ def analyze_pcap(filename):
                 if packet[ARP].hwsrc not in clients:
                     clients[str(packet[ARP].hwsrc)] = packet[ARP].psrc #Only read packets with ARP layer, and save each client in a dictionary.
                 if packet[ARP].op == 2:
-                    print("Legitimate packet\n",packet.show())
                     tx_mac = str(packet[ARP].hwsrc)
                     tx_ip = str(packet[ARP].psrc)
                     try:
                         if clients[tx_mac] != tx_ip:
-                            print("Malicious packet\n")
-                            print(packet.show())
                             timestamp = datetime.utcfromtimestamp(int(packet.time))
                             formatted_timestamp = timestamp.strftime("%H:%M:%S %d/%m/%Y")
-                            break
                             if tx_mac in possible_attacker:
                                 possible_attacker[tx_mac][1] += 1
                             else:
